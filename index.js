@@ -1,7 +1,7 @@
 const inquirer = require("inquirer");
 const prompt = inquirer.createPromptModule();
 require("console.table");
-const db = require("./server");
+const db = require("./db/connection");
 
 function initialPrompt() {
   prompt({
@@ -12,36 +12,16 @@ function initialPrompt() {
   }).then((answer) => {
     switch (answer.query) {
       case "View all employees":
-        db.query("SELECT * FROM employee", (err, results) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.table(results);
-            initialPrompt();
-          }
-        });
+        // handleView is a function that takes in a table name, queries the database for that table, and logs the results to the console.
+        handleView("employee");
         break;
 
       case "View all roles":
-        db.query("SELECT * FROM role", (err, results) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.table(results);
-            initialPrompt();
-          }
-        });
+        handleView("role");
         break;
 
       case "View all departments":
-        db.query("SELECT * FROM department", (err, results) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.table(results);
-            initialPrompt();
-          }
-        });
+        handleView("department");
         break;
 
       case "Add an employee":
@@ -84,6 +64,17 @@ function initialPrompt() {
           });
         });
         break;
+    }
+  });
+}
+
+function handleView(table) {
+  db.query("SELECT * FROM ??", table, (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.table(results);
+      initialPrompt();
     }
   });
 }
