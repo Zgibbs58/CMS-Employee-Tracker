@@ -26,41 +26,49 @@ function initialPrompt() {
 
       case "Add an employee":
         employeeRoles().then((roles) => {
-          prompt([
-            {
-              type: "input",
-              name: "first_name",
-              message: "What is the employee's first name?",
-            },
-            {
-              type: "input",
-              name: "last_name",
-              message: "What is the employee's last name?",
-            },
-            {
-              type: "list",
-              name: "role",
-              message: "What is the employee's role?",
-              choices: roles,
-            },
-          ]).then((answer) => {
-            console.log(answer);
-            db.query(
-              "INSERT INTO employee SET ?",
+          employeeManager().then((managers) => {
+            prompt([
               {
-                first_name: answer.first_name,
-                last_name: answer.last_name,
-                role_id: answer.role,
+                type: "input",
+                name: "first_name",
+                message: "What is the employee's first name?",
               },
-              (err) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  console.log("Employee added successfully!");
-                  initialPrompt();
+              {
+                type: "input",
+                name: "last_name",
+                message: "What is the employee's last name?",
+              },
+              {
+                type: "list",
+                name: "role",
+                message: "What is the employee's role?",
+                choices: roles,
+              },
+              {
+                type: "list",
+                name: "manager",
+                message: "Who is the employee's manager?",
+                choices: managers,
+              },
+            ]).then((answer) => {
+              db.query(
+                "INSERT INTO employee SET ?",
+                {
+                  first_name: answer.first_name,
+                  last_name: answer.last_name,
+                  role_id: answer.role,
+                  manager_id: answer.manager,
+                },
+                (err) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    console.log("Employee added successfully!");
+                    initialPrompt();
+                  }
                 }
-              }
-            );
+              );
+            });
           });
         });
         break;
@@ -86,6 +94,18 @@ function employeeRoles() {
     .then(([data]) => {
       return data.map(({ title, id }) => ({
         name: title,
+        value: id,
+      }));
+    });
+}
+
+function employeeManager() {
+  return db
+    .promise()
+    .query("SELECT * FROM employee")
+    .then(([data]) => {
+      return data.map(({ first_name, last_name, id }) => ({
+        name: `${first_name} ${last_name}`,
         value: id,
       }));
     });
