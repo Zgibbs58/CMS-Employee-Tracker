@@ -8,7 +8,7 @@ function initialPrompt() {
     type: "list",
     name: "query",
     message: "Select an option",
-    choices: ["View all departments", "View all roles", "View all employees", "Add an employee"],
+    choices: ["View all departments", "View all roles", "View all employees", "Add an employee", "Add a department"],
   }).then((answer) => {
     switch (answer.query) {
       case "View all employees":
@@ -72,6 +72,9 @@ function initialPrompt() {
           });
         });
         break;
+      case "Add a department":
+        addDepartment();
+        break;
     }
   });
 }
@@ -109,6 +112,31 @@ function employeeManager() {
         value: id,
       }));
     });
+}
+
+function addDepartment() {
+  prompt([
+    {
+      type: "input",
+      name: "department",
+      message: "What is the name of the department you would like to add?",
+    },
+  ]).then((answer) => {
+    db.query(
+      "INSERT INTO department SET ?",
+      {
+        name: answer.department,
+      },
+      (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Department added successfully!");
+          initialPrompt();
+        }
+      }
+    );
+  });
 }
 
 initialPrompt();
