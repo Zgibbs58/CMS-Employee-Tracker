@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 const prompt = inquirer.createPromptModule();
 require("console.table");
 const db = require("./db/connection");
+const e = require("express");
 
 function initialPrompt() {
   prompt({
@@ -25,8 +26,8 @@ function initialPrompt() {
         break;
 
       case "Add an employee":
-        employeeRoles().then((roles) => {
-          employeeManager().then((managers) => {
+        selectRoles().then((roles) => {
+          selectManagers().then((managers) => {
             prompt([
               {
                 type: "input",
@@ -40,40 +41,28 @@ function initialPrompt() {
               },
               {
                 type: "list",
-                name: "role",
+                name: "role_id",
                 message: "What is the employee's role?",
                 choices: roles,
               },
               {
                 type: "list",
-                name: "manager",
+                name: "manager_id",
                 message: "Who is the employee's manager?",
                 choices: managers,
               },
-            ]).then((answer) => {
-              db.query(
-                "INSERT INTO employee SET ?",
-                {
-                  first_name: answer.first_name,
-                  last_name: answer.last_name,
-                  role_id: answer.role,
-                  manager_id: answer.manager,
-                },
-                (err) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    console.log("Employee added successfully!");
-                    initialPrompt();
-                  }
-                }
-              );
-            });
+            ]).then(addEmployee);
           });
         });
         break;
       case "Add a department":
-        addDepartment();
+        prompt([
+          {
+            type: "input",
+            name: "name",
+            message: "What is the name of the department you would like to add?",
+          },
+        ]).then(addDepartment);
         break;
     }
   });
@@ -82,15 +71,14 @@ function initialPrompt() {
 function handleView(table) {
   db.query("SELECT * FROM ??", table, (err, results) => {
     if (err) {
-      console.log(err);
-    } else {
-      console.table(results);
-      initialPrompt();
+      return console.error(err);
     }
+    console.table(results);
+    initialPrompt();
   });
 }
 
-function employeeRoles() {
+function selectRoles() {
   return db
     .promise()
     .query("SELECT * FROM role")
@@ -99,10 +87,11 @@ function employeeRoles() {
         name: title,
         value: id,
       }));
-    });
+    })
+    .catch((err) => console.error(err));
 }
 
-function employeeManager() {
+function selectManagers() {
   return db
     .promise()
     .query("SELECT * FROM employee")
@@ -111,31 +100,29 @@ function employeeManager() {
         name: `${first_name} ${last_name}`,
         value: id,
       }));
-    });
+    })
+    .catch((err) => console.error(err));
 }
 
-function addDepartment() {
-  prompt([
-    {
-      type: "input",
-      name: "department",
-      message: "What is the name of the department you would like to add?",
-    },
-  ]).then((answer) => {
-    db.query(
-      "INSERT INTO department SET ?",
-      {
-        name: answer.department,
-      },
-      (err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("Department added successfully!");
-          initialPrompt();
-        }
-      }
-    );
+function addEmployee(answer) {
+  db.query("INSERT INTO employee SET ?", answer, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Employee added successfully!");
+      initialPrompt();
+    }
+  });
+}
+
+function addDepartment(answer) {
+  db.query("INSERT INTO department SET ?", answer, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Department added successfully!");
+      initialPrompt();
+    }
   });
 }
 
