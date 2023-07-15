@@ -2,7 +2,6 @@ const inquirer = require("inquirer");
 const prompt = inquirer.createPromptModule();
 require("console.table");
 const db = require("./db/connection");
-const e = require("express");
 
 function initialPrompt() {
   prompt({
@@ -18,7 +17,7 @@ function initialPrompt() {
         break;
 
       case "View all roles":
-        handleView("role");
+        viewRoles();
         break;
 
       case "View all departments":
@@ -76,6 +75,19 @@ function handleView(table) {
     console.table(results);
     initialPrompt();
   });
+}
+
+function viewRoles() {
+  db.query(
+    "SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department_id = department.id",
+    (err, results) => {
+      if (err) {
+        return console.error(err);
+      }
+      console.table(results);
+      initialPrompt();
+    }
+  );
 }
 
 function selectRoles() {
