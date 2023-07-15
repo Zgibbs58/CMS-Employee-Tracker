@@ -13,7 +13,7 @@ function initialPrompt() {
     switch (answer.query) {
       case "View all employees":
         // handleView is a function that takes in a table name, queries the database for that table, and logs the results to the console.
-        handleView("employee");
+        handleView("employees");
         break;
 
       case "View all roles":
@@ -21,7 +21,7 @@ function initialPrompt() {
         break;
 
       case "View all departments":
-        handleView("department");
+        handleView("departments");
         break;
 
       case "Add an employee":
@@ -79,7 +79,7 @@ function handleView(table) {
 
 function viewRoles() {
   db.query(
-    "SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department_id = department.id",
+    "SELECT roles.id, roles.title, departments.name AS department, roles.salary FROM roles JOIN departments ON roles.department_id = departments.id",
     (err, results) => {
       if (err) {
         return console.error(err);
@@ -93,7 +93,7 @@ function viewRoles() {
 function selectRoles() {
   return db
     .promise()
-    .query("SELECT * FROM role")
+    .query("SELECT * FROM roles")
     .then(([data]) => {
       return data.map(({ title, id }) => ({
         name: title,
@@ -106,7 +106,7 @@ function selectRoles() {
 function selectManagers() {
   return db
     .promise()
-    .query("SELECT * FROM employee")
+    .query("SELECT * FROM employees")
     .then(([data]) => {
       return data.map(({ first_name, last_name, id }) => ({
         name: `${first_name} ${last_name}`,
@@ -117,7 +117,7 @@ function selectManagers() {
 }
 
 function addEmployee(answer) {
-  db.query("INSERT INTO employee SET ?", answer, (err) => {
+  db.query("INSERT INTO employees SET ?", answer, (err) => {
     if (err) {
       console.log(err);
     } else {
@@ -128,7 +128,7 @@ function addEmployee(answer) {
 }
 
 function addDepartment(answer) {
-  db.query("INSERT INTO department SET ?", answer, (err) => {
+  db.query("INSERT INTO departments SET ?", answer, (err) => {
     if (err) {
       console.log(err);
     } else {
