@@ -7,7 +7,7 @@ function init() {
     type: "list",
     name: "query",
     message: "Select an option",
-    choices: ["View all departments", "View all roles", "View all employees", "Add an employee", "Add a department", "exit"],
+    choices: ["View all departments", "View all roles", "View all employees", "Add an employee", "Add a department", "exit", "Add a role"],
   }).then((answer) => {
     switch (answer.query) {
       case "View all employees":
@@ -25,6 +25,30 @@ function init() {
 
       case "exit":
         process.exit();
+
+      case "Add a role":
+        prompt([
+          {
+            type: "input",
+            name: "title",
+            message: "What is the name of the role?",
+          },
+
+          {
+            type: "input",
+            name: "salary",
+            message: "What is the salary of the role?",
+          },
+          {
+            type: "list",
+            name: "department_id",
+            message: "Which department does the role belong to?",
+            choices: queries.selectDepartments,
+          },
+        ])
+          .then(queries.addRole)
+          .then(init);
+        break;
 
       case "Add an employee":
         prompt([
