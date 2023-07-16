@@ -15,7 +15,7 @@ function init() {
       "Add a role",
       "View all departments",
       "Add a department",
-      "exit",
+      "Exit",
     ],
   }).then((answer) => {
     switch (answer.query) {
@@ -96,7 +96,15 @@ function init() {
             message: "Which employee's role would you like to update?",
             choices: queries.selectEmployees,
           },
-        ]);
+          {
+            type: "list",
+            name: "role_id",
+            message: "What is the employee's new role?",
+            choices: queries.selectRoles,
+          },
+        ])
+          .then(queries.updateEmployeeRole)
+          .then(init);
         break;
 
       case "Add a department":
