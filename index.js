@@ -55,7 +55,7 @@ function init() {
         break;
 
       case "exit":
-        process.exit(0);
+        process.exit();
     }
   });
 }
