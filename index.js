@@ -1,7 +1,23 @@
 const inquirer = require("inquirer");
 const prompt = inquirer.createPromptModule();
-const { handleView, viewRoles, viewEmployees, addEmployee, addDepartment, addRole, updateEmployeeRole } = require("./lib/queries");
-const { mainMenuQuestions, addRoleQuestions, addEmpQuestions, addEmpRoleQuestions, addDepartmentQuestions } = require("./lib/questions");
+const {
+  handleView,
+  viewRoles,
+  viewEmployees,
+  addEmployee,
+  addDepartment,
+  addRole,
+  updateEmployeeRole,
+  updateEmployeeManager,
+} = require("./lib/queries");
+const {
+  mainMenuQuestions,
+  addRoleQuestions,
+  addEmpQuestions,
+  addEmpRoleQuestions,
+  addDepartmentQuestions,
+  addEmpManagerQuestions,
+} = require("./lib/questions");
 
 function init() {
   prompt(mainMenuQuestions).then((answer) => {
@@ -30,6 +46,9 @@ function init() {
       case "Update Employee Role":
         prompt(addEmpRoleQuestions).then(updateEmployeeRole).then(init);
         break;
+
+      case "Update Employee Manager":
+        prompt(addEmpManagerQuestions).then(updateEmployeeManager).then(init);
 
       case "Add a department":
         prompt(addDepartmentQuestions).then(addDepartment).then(init);
