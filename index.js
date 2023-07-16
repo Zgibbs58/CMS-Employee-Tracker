@@ -7,7 +7,16 @@ function init() {
     type: "list",
     name: "query",
     message: "Select an option",
-    choices: ["View all departments", "View all roles", "View all employees", "Add an employee", "Add a department", "exit", "Add a role"],
+    choices: [
+      "View all employees",
+      "Add an employee",
+      "Update Employee Role",
+      "View all roles",
+      "Add a role",
+      "View all departments",
+      "Add a department",
+      "exit",
+    ],
   }).then((answer) => {
     switch (answer.query) {
       case "View all employees":
@@ -78,6 +87,18 @@ function init() {
           .then(queries.addEmployee)
           .then(init);
         break;
+
+      case "Update Employee Role":
+        prompt([
+          {
+            type: "list",
+            name: "id",
+            message: "Which employee's role would you like to update?",
+            choices: queries.selectEmployees,
+          },
+        ]);
+        break;
+
       case "Add a department":
         prompt([
           {
