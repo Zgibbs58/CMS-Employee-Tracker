@@ -5,7 +5,7 @@ This command-line application allows you to manage a company's employee database
 
 ## Video Walkthrough
 
-[Link to Walkthrough Video](https://drive.google.com/file/d/1lk7U8ydg4rOvuG44mDpkw_5w5E0Gc15f/view)
+[Link to Walkthrough Video](https://drive.google.com/file/d/1Z8fVnCrX_5llcG51-8T2rW0sQsbl_xRi/view)
 
 # Table of Contents
 - [Installation](#installation)

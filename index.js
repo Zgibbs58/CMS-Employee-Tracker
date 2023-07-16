@@ -49,6 +49,7 @@ function init() {
 
       case "Update Employee Manager":
         prompt(addEmpManagerQuestions).then(updateEmployeeManager).then(init);
+        break;
 
       case "Add a department":
         prompt(addDepartmentQuestions).then(addDepartment).then(init);
