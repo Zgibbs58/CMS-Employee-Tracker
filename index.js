@@ -7,7 +7,7 @@ function init() {
     type: "list",
     name: "query",
     message: "Select an option",
-    choices: ["View all departments", "View all roles", "View all employees", "Add an employee", "Add a department"],
+    choices: ["View all departments", "View all roles", "View all employees", "Add an employee", "Add a department", "exit"],
   }).then((answer) => {
     switch (answer.query) {
       case "View all employees":
@@ -22,6 +22,9 @@ function init() {
         // handleView is a function that takes in a table name, queries the database for that table, and logs the results to the console.
         queries.handleView("departments").then(init);
         break;
+
+      case "exit":
+        process.exit();
 
       case "Add an employee":
         prompt([
