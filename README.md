@@ -3,14 +3,11 @@
 
 This command-line application allows you to manage a company's employee database. It provides functionalities to view departments, roles, and employees, as well as add new departments, roles, and employees. You can also update an employee's role.
 
-## Video Walkthrough
-
-[Link to Walkthrough Video](https://drive.google.com/file/d/1Z8fVnCrX_5llcG51-8T2rW0sQsbl_xRi/view)
-
 # Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
+- [Video Walkthrough](#video-walkthrough)
 - [Dependencies](#dependencies)
 - [Contributing](#contributing)
 - [License](#license)
@@ -39,6 +36,12 @@ Add a role: Prompts you to enter the name, salary, and department of a new role 
 Add an employee: Prompts you to enter the first name, last name, role, and manager of a new employee and adds them to the database.
 Update an employee role: Prompts you to select an employee and update their role in the database.
 
+## Video Walkthrough
+
+[Link to Walkthrough Video](https://drive.google.com/file/d/1Z8fVnCrX_5llcG51-8T2rW0sQsbl_xRi/view)
+
+![Walkthrough GIF](assets/media/walkthroughGif.gif)
+
 ## Dependencies
 
 This application uses the following dependencies:
@@ -53,3 +56,5 @@ Contributions to this project are welcome! If you have any suggestions, please c
 ## License
 
 This project is licensed under the MIT License.
+
+--- 

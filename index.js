@@ -55,8 +55,8 @@ function init() {
         prompt(addDepartmentQuestions).then(addDepartment).then(init);
         break;
 
-      case "exit":
-        process.exit();
+      default:
+        process.exit(0);
     }
   });
 }
